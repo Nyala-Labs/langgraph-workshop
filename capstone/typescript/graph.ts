@@ -8,7 +8,7 @@ import { StateGraph, START, END, StateSchema, ReducedValue, interrupt, Command }
 import { SqliteSaver } from "@langchain/langgraph-checkpoint-sqlite";
 import { MemoryStore } from "@langchain/langgraph";
 import { ChatOpenAI } from "@langchain/openai";
-import { z } from "zod";
+import { z } from "zod"; // zod for schema validation
 import * as readline from 'readline';
 
 dotenv.config();

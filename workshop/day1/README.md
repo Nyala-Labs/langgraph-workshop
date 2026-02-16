@@ -1,6 +1,6 @@
 # Day 1: Foundations — Graphs, State, and Execution
 
-**Duration**: ~6.5 hours  
+**Duration**: 1 hour  
 **Goal**: Understand LangGraph's graph model, state management, and build your first workflow
 
 ## Learning Objectives
@@ -17,15 +17,10 @@ By the end of Day 1, you will be able to:
 
 | Time | Activity | Duration |
 |------|----------|----------|
-| 09:00-09:15 | Welcome + Setup verification | 15 min |
-| 09:15-10:30 | **Block 1**: Why graphs? + First workflow | 75 min |
-| 10:30-10:45 | Break | 15 min |
-| 10:45-12:00 | **Block 2**: State schemas + reducers | 75 min |
-| 12:00-13:00 | Lunch | 60 min |
-| 13:00-14:30 | **Block 3**: Conditional edges + streaming | 90 min |
-| 14:30-14:45 | Break | 15 min |
-| 14:45-16:00 | **Block 4**: Capstone scaffold | 75 min |
-| 16:00-16:30 | Integration + exit ticket | 30 min |
+| 09:00-09:15 | Welcome + Setup verification | 5 min |
+| 09:15-10:30 | **Block 1**: Why graphs? + First workflow | 20 min |
+| 10:45-12:00 | **Block 2**: State schemas + reducers | 20 min |
+| 13:00-14:30 | **Block 3**: Conditional edges + streaming | 20 min |
 
 ## Topics Covered
 
@@ -120,6 +115,7 @@ Final: {'message': 'Hello -> A -> B -> C', 'count': 3}
 
 ```typescript
 import { StateGraph, START, END, StateSchema } from "@langchain/langgraph";
+// zod for schema validation
 import { z } from "zod";
 
 // 1. Define state schema

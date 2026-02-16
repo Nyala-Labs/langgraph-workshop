@@ -52,7 +52,7 @@ Each day includes:
 - Time travel debugging
 - Checkpoint forking
 
-**Day 5: Production Hardening (Optional)**
+**Day 5: Production Hardening**
 - Evaluation fundamentals
 - Dataset creation and evaluators
 - LangSmith Studio integration
@@ -114,8 +114,8 @@ Implementations:
 
 ## 📊 Statistics
 
-- **Total Days**: 4 core + 1 optional
-- **Total Hours**: ~32.5 hours instruction
+- **Total Days**: 5 core sessions (1 hour each)
+- **Total Hours**: ~5 hours instruction
 - **Lab Exercises**: 25+ hands-on labs
 - **Code Files**: 10+ implementation files
 - **Documentation Pages**: 15+ markdown files

@@ -1,6 +1,6 @@
 # Day 4: Memory, Multi-Agent Systems & Time Travel
 
-**Duration**: ~6.5 hours  
+**Duration**: 1 hour
 **Goal**: Build multi-agent architectures with long-term memory and master time-travel debugging
 
 ## Learning Objectives
@@ -17,15 +17,10 @@ By the end of Day 4, you will be able to:
 
 | Time | Activity | Duration |
 |------|----------|----------|
-| 09:00-09:15 | Recap + objectives | 15 min |
-| 09:15-10:30 | **Block 1**: Memory stores basics | 75 min |
-| 10:30-10:45 | Break | 15 min |
-| 10:45-12:00 | **Block 2**: Semantic memory retrieval | 75 min |
-| 12:00-13:00 | Lunch | 60 min |
-| 13:00-14:30 | **Block 3**: Multi-agent supervisor pattern | 90 min |
-| 14:30-14:45 | Break | 15 min |
-| 14:45-16:00 | **Block 4**: Time travel debugging | 75 min |
-| 16:00-16:30 | Capstone integration + exit ticket | 30 min |
+| 09:00-09:05 | Recap + objectives | 5 min |
+| 09:05-09:25 | **Block 1**: Memory stores + semantic retrieval | 20 min |
+| 09:25-09:45 | **Block 2**: Multi-agent supervisor pattern | 20 min |
+| 09:45-10:00 | **Block 3**: Time travel debugging + wrap-up | 15 min |
 
 ## Topics Covered
 
@@ -522,4 +517,4 @@ User (Thread 2): "Research machine learning"
 
 ---
 
-**Next**: [Day 5 - Production Hardening (Optional)](../day5_optional/README.md) →
+**Next**: [Day 5 - Production Hardening](../day5/README.md) →

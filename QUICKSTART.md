@@ -80,7 +80,7 @@ Day 1: Foundations (graphs, state, routing) → workshop/day1/
 Day 2: Persistence & durability             → workshop/day2/
 Day 3: Human-in-the-loop with interrupts    → workshop/day3/
 Day 4: Memory & multi-agent systems         → workshop/day4/
-Day 5: Production hardening (optional)      → workshop/day5_optional/
+Day 5: Production hardening                 → workshop/day5/
 
 Capstone: Research Assistant Agent          → capstone/
 ```

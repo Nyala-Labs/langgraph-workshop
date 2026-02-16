@@ -1,6 +1,6 @@
-# Day 5: Production Hardening (Optional)
+# Day 5: Production Hardening
 
-**Duration**: ~6.5 hours  
+**Duration**: 1 hour  
 **Goal**: Make your agent production-ready with evals, observability, and safety measures
 
 ## Learning Objectives
@@ -17,15 +17,10 @@ By the end of Day 5, you will be able to:
 
 | Time | Activity | Duration |
 |------|----------|----------|
-| 09:00-09:15 | Recap + production mindset | 15 min |
-| 09:15-10:30 | **Block 1**: Evaluation fundamentals | 75 min |
-| 10:30-10:45 | Break | 15 min |
-| 10:45-12:00 | **Block 2**: Studio observability | 75 min |
-| 12:00-13:00 | Lunch | 60 min |
-| 13:00-14:30 | **Block 3**: Safety & operational practices | 90 min |
-| 14:30-14:45 | Break | 15 min |
-| 14:45-16:00 | **Block 4**: Capstone demos | 75 min |
-| 16:00-16:30 | Wrap-up + next steps | 30 min |
+| 09:00-09:05 | Recap + production mindset | 5 min |
+| 09:05-09:25 | **Block 1**: Evaluation fundamentals + observability | 20 min |
+| 09:25-09:45 | **Block 2**: Safety & operational practices | 20 min |
+| 09:45-10:00 | **Block 3**: Capstone demos + wrap-up | 15 min |
 
 ## Topics Covered
 

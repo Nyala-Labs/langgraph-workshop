@@ -151,7 +151,7 @@ This guide helps instructors prepare for and deliver the LangGraph Comprehensive
 2. Live-code the lab instead of having students code
 3. Merge two formative checks into one
 4. Shorten lunch by 15 minutes (ask first!)
-5. Cut Day 5 content (it's optional)
+5. Reduce depth on advanced topics
 
 ### If Running Ahead (>15 minutes)
 1. Add challenge exercises for advanced students
@@ -312,7 +312,7 @@ npm install
 - **Watch for**: Forgetting to pass `store` via runtime param
 - **Pro tip**: Use Venn diagram for store/checkpointer scopes
 
-### Day 5 (Optional)
+### Day 5
 - **Hardest part**: Evaluation mindset shift (testing agents is hard)
 - **Extra time needed**: Capstone demos (people always run over!)
 - **Watch for**: Perfectionism (good enough is good enough)

@@ -1,6 +1,6 @@
 # Day 2: Persistence & Durable Execution
 
-**Duration**: ~6.5 hours  
+**Duration**: 1 hour
 **Goal**: Add persistence, understand checkpoints, and build fault-tolerant agents
 
 ## Learning Objectives
@@ -17,15 +17,10 @@ By the end of Day 2, you will be able to:
 
 | Time | Activity | Duration |
 |------|----------|----------|
-| 09:00-09:15 | Recap Day 1 + Day 2 objectives | 15 min |
-| 09:15-10:30 | **Block 1**: Checkpointers + threads | 75 min |
-| 10:30-10:45 | Break | 15 min |
-| 10:45-12:00 | **Block 2**: State history + replay | 75 min |
-| 12:00-13:00 | Lunch | 60 min |
-| 13:00-14:30 | **Block 3**: Failure recovery patterns | 90 min |
-| 14:30-14:45 | Break | 15 min |
-| 14:45-16:00 | **Block 4**: Multi-turn conversations | 75 min |
-| 16:00-16:30 | Capstone integration + exit ticket | 30 min |
+| 09:00-09:05 | Recap Day 1 + Day 2 objectives | 5 min |
+| 09:05-09:25 | **Block 1**: Checkpointers + threads | 20 min |
+| 09:25-09:45 | **Block 2**: State history + failure recovery | 20 min |
+| 09:45-10:00 | **Block 3**: Multi-turn conversations + wrap-up | 15 min |
 
 ## Topics Covered
 
