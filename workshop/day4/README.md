@@ -15,12 +15,16 @@ By the end of Day 4, you will be able to:
 
 ## Schedule
 
-| Time | Activity | Duration |
-|------|----------|----------|
-| 09:00-09:05 | Recap + objectives | 5 min |
-| 09:05-09:25 | **Block 1**: Memory stores + semantic retrieval | 20 min |
-| 09:25-09:45 | **Block 2**: Multi-agent supervisor pattern | 20 min |
-| 09:45-10:00 | **Block 3**: Time travel debugging + wrap-up | 15 min |
+Activity | Duration |
+----------|----------|
+Recap Day 3 + objectives | 5 min |
+**Lab 1**: Memory store basics | 10 min |
+**Lab 2**: Using store in LangGraph | 10 min |
+**Lab 3**: Semantic search | 10 min |
+**Lab 4**: Multi-agent supervisor pattern | 10 min |
+**Lab 5**: Subgraphs | 10 min |
+**Lab 6**: Time travel debugging | 10 min |
+**Lab 7**: Update state as different node | 10 min |
 
 ## Topics Covered
 

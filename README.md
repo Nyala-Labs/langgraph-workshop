@@ -162,15 +162,6 @@ See [`capstone/README.md`](capstone/README.md) for full requirements and rubric.
 - [LangGraph Examples](https://langchain-ai.github.io/langgraph/examples/)
 - [Carpentries Instructor Training](https://carpentries.github.io/instructor-training/) (pedagogy reference)
 
-## 🤝 For Instructors
-
-See [`INSTRUCTOR_GUIDE.md`](INSTRUCTOR_GUIDE.md) for:
-- Detailed lesson plans and timing
-- Common student misconceptions
-- Troubleshooting tips
-- Setup verification checklist
-- Helper assignment and roles
-
 ## 📜 License
 
 This workshop is licensed under [MIT License](LICENSE). Workshop materials are © 2026 [Nyala Labs].

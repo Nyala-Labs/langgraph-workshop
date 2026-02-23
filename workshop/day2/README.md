@@ -15,12 +15,14 @@ By the end of Day 2, you will be able to:
 
 ## Schedule
 
-| Time | Activity | Duration |
-|------|----------|----------|
-| 09:00-09:05 | Recap Day 1 + Day 2 objectives | 5 min |
-| 09:05-09:25 | **Block 1**: Checkpointers + threads | 20 min |
-| 09:25-09:45 | **Block 2**: State history + failure recovery | 20 min |
-| 09:45-10:00 | **Block 3**: Multi-turn conversations + wrap-up | 15 min |
+Activity | Duration |
+----------|----------|
+Recap Day 1 + Day 2 objectives | 5 min |
+**Lab 1**: Adding a checkpointer | 10 min |
+**Lab 2**: Inspecting state snapshots | 10 min |
+**Lab 3**: State history | 10 min |
+**Lab 4**: Failure recovery | 10 min |
+**Lab 5**: Multi-turn conversations | 10 min |
 
 ## Topics Covered
 

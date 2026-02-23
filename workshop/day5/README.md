@@ -15,12 +15,15 @@ By the end of Day 5, you will be able to:
 
 ## Schedule
 
-| Time | Activity | Duration |
-|------|----------|----------|
-| 09:00-09:05 | Recap + production mindset | 5 min |
-| 09:05-09:25 | **Block 1**: Evaluation fundamentals + observability | 20 min |
-| 09:25-09:45 | **Block 2**: Safety & operational practices | 20 min |
-| 09:45-10:00 | **Block 3**: Capstone demos + wrap-up | 15 min |
+Activity | Duration |
+----------|----------|
+Recap Day 4 + production mindset | 5 min |
+**Lab 1**: Evaluation fundamentals | 10 min |
+**Lab 2**: LLM-as-judge evaluators | 10 min |
+**Lab 3**: Tool trajectory evaluation | 10 min |
+**Lab 4**: LangSmith Studio | 10 min |
+**Lab 5**: Safety measures | 10 min |
+**Lab 6**: Operational runbooks | 10 min |
 
 ## Topics Covered
 

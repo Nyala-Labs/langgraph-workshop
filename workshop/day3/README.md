@@ -16,12 +16,15 @@ By the end of Day 3, you will be able to:
 
 ## Schedule
 
-| Time | Activity | Duration |
-|------|----------|----------|
-| 09:00-09:05 | Recap + objectives | 5 min |
-| 09:05-09:25 | **Block 1**: Interrupt basics + approval flows | 20 min |
-| 09:25-09:45 | **Block 2**: Review/edit patterns + interrupts in tools | 20 min |
-| 09:45-10:00 | **Block 3**: Streaming HITL + wrap-up | 15 min |
+Activity | Duration |
+----------|----------|
+Recap Day 2 + objectives | 5 min |
+**Lab 1**: Basic interrupt pattern | 10 min |
+**Lab 2**: Approval with routing | 10 min |
+**Lab 3**: Review and edit state | 10 min |
+**Lab 4**: Interrupts in tools | 10 min |
+**Lab 5**: Streaming with interrupts | 10 min |
+**Lab 6**: Validation loop | 10 min |
 
 ## Topics Covered
 

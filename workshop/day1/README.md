@@ -15,12 +15,14 @@ By the end of Day 1, you will be able to:
 
 ## Schedule
 
-| Time | Activity | Duration |
-|------|----------|----------|
-| 09:00-09:15 | Welcome + Setup verification | 5 min |
-| 09:15-10:30 | **Block 1**: Why graphs? + First workflow | 20 min |
-| 10:45-12:00 | **Block 2**: State schemas + reducers | 20 min |
-| 13:00-14:30 | **Block 3**: Conditional edges + streaming | 20 min |
+Activity | Duration |
+----------|----------|
+Welcome + Setup verification | 5 min |
+**Lab 1**: Why graphs? + First workflow | 10 min |
+**Lab 2**: State schemas + reducers | 10 min |
+**Lab 3**: Conditional edges | 10 min |
+**Lab 4**: Streaming | 10 min |
+**Lab 5**: Capstone | 10 min |
 
 ## Topics Covered
 
@@ -244,6 +246,8 @@ console.log(result.counter);  // 2
 
 **Objective**: Route dynamically based on state.
 
+#### Python
+
 ```python
 from langgraph.graph import StateGraph, START, END
 
@@ -286,6 +290,50 @@ print(graph.invoke({"number": 4, "path": ""}))  # Goes to even
 print(graph.invoke({"number": 7, "path": ""}))  # Goes to odd
 ```
 
+#### TypeScript
+
+**File**: `workshop/day1/labs/lab3_conditional_edges.ts`
+
+```typescript
+import { StateGraph, START, END, StateSchema } from "@langchain/langgraph";
+import { z } from "zod";
+
+const State = new StateSchema({
+  number: z.number(),
+  path: z.string(),
+});
+
+function startNode(state: typeof State.State) {
+  return { number: state.number, path: "start" };
+}
+
+function evenNode(_state: typeof State.State) {
+  return { path: "even" };
+}
+
+function oddNode(_state: typeof State.State) {
+  return { path: "odd" };
+}
+
+// Conditional routing function — returns the name of the next node
+function router(state: typeof State.State): string {
+  return state.number % 2 === 0 ? "even" : "odd";
+}
+
+const graph = new StateGraph(State)
+  .addNode("start", startNode)
+  .addNode("even", evenNode)
+  .addNode("odd", oddNode)
+  .addEdge(START, "start")
+  .addConditionalEdges("start", router, { even: "even", odd: "odd" })
+  .addEdge("even", END)
+  .addEdge("odd", END)
+  .compile();
+
+console.log(await graph.invoke({ number: 4, path: "" })); // Goes to even
+console.log(await graph.invoke({ number: 7, path: "" })); // Goes to odd
+```
+
 **Formative Check**:
 1. What happens if `router` returns `"unknown"`?
 2. How would you add a third path for numbers divisible by 3?
@@ -296,6 +344,8 @@ print(graph.invoke({"number": 7, "path": ""}))  # Goes to odd
 
 **Key Idea**: Stream intermediate results as the graph executes.
 
+#### Python
+
 ```python
 # Stream mode: "values" returns state after each node
 for chunk in graph.stream({"number": 5, "path": ""}, stream_mode="values"):
@@ -304,6 +354,26 @@ for chunk in graph.stream({"number": 5, "path": ""}, stream_mode="values"):
 # Stream mode: "updates" returns only the node's output
 for chunk in graph.stream({"number": 5, "path": ""}, stream_mode="updates"):
     print(chunk)
+```
+
+#### TypeScript
+
+```typescript
+// Stream mode: "values" returns full state after each node
+for await (const chunk of await graph.stream(
+  { number: 5, path: "" },
+  { streamMode: "values" }
+)) {
+  console.log(chunk);
+}
+
+// Stream mode: "updates" returns only the node's output delta
+for await (const chunk of await graph.stream(
+  { number: 5, path: "" },
+  { streamMode: "updates" }
+)) {
+  console.log(chunk);
+}
 ```
 
 **Lab**: Modify your graph to print streaming updates in real-time.
@@ -322,10 +392,73 @@ Build a "Research Assistant Agent" that:
 
 ### Day 1 Scaffold
 
+#### Python
+
 Create:
 - State schema with `messages` (list) and `current_tool` (str)
 - Three nodes: `router`, `search_tool`, `synthesize`
 - Conditional edge from `router` based on query type
+
+#### TypeScript
+
+**File**: `workshop/day1/labs/lab5_capstone.ts`
+
+```typescript
+import { StateGraph, START, END, StateSchema, ReducedValue } from "@langchain/langgraph";
+import { z } from "zod";
+
+const State = new StateSchema({
+  messages: new ReducedValue(
+    z.array(z.string()).default([]),
+    {
+      inputSchema: z.array(z.string()),
+      reducer: (x, y) => x.concat(y),
+    }
+  ),
+  current_tool: z.string(),
+});
+
+// Stub nodes — replace with real implementations later
+function routerNode(state: typeof State.State) {
+  const query = state.messages.at(-1) ?? "";
+  if (query.includes("calculate")) return { current_tool: "calculator" };
+  if (query.includes("file")) return { current_tool: "file_lookup" };
+  return { current_tool: "search" };
+}
+
+function searchTool(state: typeof State.State) {
+  return { messages: [`[search result for: ${state.messages.at(-1)}]`] }; // reducer concats this array of 1 element to existing array for messages
+}
+
+function synthesize(state: typeof State.State) {
+  return { messages: [`Synthesized: ${state.messages.join(" | ")}`] };
+}
+
+function routerEdge(state: typeof State.State): string {
+  return state.current_tool; // "search" | "calculator" | "file_lookup"
+}
+
+const graph = new StateGraph(State)
+  .addNode("router", routerNode)
+  .addNode("search", searchTool)
+  .addNode("calculator", searchTool)   // stub — replace with real calculator
+  .addNode("file_lookup", searchTool)  // stub — replace with real file lookup
+  .addNode("synthesize", synthesize)
+  .addEdge(START, "router")
+  .addConditionalEdges("router", routerEdge, {
+    search: "search",
+    calculator: "calculator",
+    file_lookup: "file_lookup",
+  })
+  .addEdge("search", "synthesize")
+  .addEdge("calculator", "synthesize")
+  .addEdge("file_lookup", "synthesize")
+  .addEdge("synthesize", END)
+  .compile();
+
+const result = await graph.invoke({ messages: ["calculate 2 + 2"], current_tool: "" });
+console.log(result.messages);
+```
 
 **Checkpoint**: By end of Day 1, your graph should route correctly but tools can be stubs.
 
