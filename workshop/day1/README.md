@@ -116,14 +116,12 @@ Final: {'message': 'Hello -> A -> B -> C', 'count': 3}
 **File**: `workshop/day1/labs/lab1_first_graph.ts`
 
 ```typescript
-import { StateGraph, START, END, StateSchema } from "@langchain/langgraph";
-// zod for schema validation
-import { z } from "zod";
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
 // 1. Define state schema
-const State = new StateSchema({
-  message: z.string(),
-  count: z.number(),
+const State = Annotation.Root({
+  message: Annotation<string>(),
+  count: Annotation<number>(),
 });
 
 // 2. Define nodes
@@ -154,8 +152,10 @@ const workflow = new StateGraph(State)
 
 // 4. Compile and run
 const graph = workflow.compile();
-const result = await graph.invoke({ message: "Hello", count: 0 });
-console.log(`\nFinal:`, result);
+(async () => {
+  const result = await graph.invoke({ message: "Hello", count: 0 });
+  console.log(`\nFinal:`, result);
+})();
 ```
 
 **Formative Check**: Before running, predict:
@@ -203,18 +203,14 @@ print(result["counter"])   # 2 — overwritten!
 #### TypeScript: Using ReducedValue
 
 ```typescript
-import { StateGraph, StateSchema, ReducedValue } from "@langchain/langgraph";
-import { z } from "zod";
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
-const State = new StateSchema({
-  messages: new ReducedValue(
-    z.array(z.string()).default([]),
-    {
-      inputSchema: z.array(z.string()),
-      reducer: (x, y) => x.concat(y),
-    }
-  ),
-  counter: z.number(),
+const State = Annotation.Root({
+  messages: Annotation<string[]>({
+    reducer: (x, y) => x.concat(y),
+    default: () => [],
+  }),
+  counter: Annotation<number>(),
 });
 
 function node1(state: typeof State.State) {
@@ -233,9 +229,11 @@ const graph = new StateGraph(State)
   .addEdge("node2", END)
   .compile();
 
-const result = await graph.invoke({ messages: [], counter: 0 });
-console.log(result.messages); // ['msg1', 'msg2']
-console.log(result.counter);  // 2
+(async () => {
+  const result = await graph.invoke({ messages: [], counter: 0 });
+  console.log(result.messages); // ['msg1', 'msg2']
+  console.log(result.counter);  // 2
+})();
 ```
 
 **Lab Exercise**: Add a third node that appends "msg3". Predict the final `messages` list.
@@ -295,12 +293,11 @@ print(graph.invoke({"number": 7, "path": ""}))  # Goes to odd
 **File**: `workshop/day1/labs/lab3_conditional_edges.ts`
 
 ```typescript
-import { StateGraph, START, END, StateSchema } from "@langchain/langgraph";
-import { z } from "zod";
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
-const State = new StateSchema({
-  number: z.number(),
-  path: z.string(),
+const State = Annotation.Root({
+  number: Annotation<number>(),
+  path: Annotation<string>(),
 });
 
 function startNode(state: typeof State.State) {
@@ -330,8 +327,10 @@ const graph = new StateGraph(State)
   .addEdge("odd", END)
   .compile();
 
-console.log(await graph.invoke({ number: 4, path: "" })); // Goes to even
-console.log(await graph.invoke({ number: 7, path: "" })); // Goes to odd
+(async () => {
+  console.log(await graph.invoke({ number: 4, path: "" })); // Goes to even
+  console.log(await graph.invoke({ number: 7, path: "" })); // Goes to odd
+})();
 ```
 
 **Formative Check**:
@@ -359,21 +358,59 @@ for chunk in graph.stream({"number": 5, "path": ""}, stream_mode="updates"):
 #### TypeScript
 
 ```typescript
-// Stream mode: "values" returns full state after each node
-for await (const chunk of await graph.stream(
-  { number: 5, path: "" },
-  { streamMode: "values" }
-)) {
-  console.log(chunk);
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
+
+const State = Annotation.Root({
+  number: Annotation<number>(),
+  path: Annotation<string>(),
+});
+
+function startNode(state: typeof State.State) {
+  return { number: state.number, path: "start" };
 }
 
-// Stream mode: "updates" returns only the node's output delta
-for await (const chunk of await graph.stream(
-  { number: 5, path: "" },
-  { streamMode: "updates" }
-)) {
-  console.log(chunk);
+function evenNode(_state: typeof State.State) {
+  return { path: "even" };
 }
+
+function oddNode(_state: typeof State.State) {
+  return { path: "odd" };
+}
+
+function router(state: typeof State.State): string {
+  return state.number % 2 === 0 ? "even" : "odd";
+}
+
+const graph = new StateGraph(State)
+  .addNode("start", startNode)
+  .addNode("even", evenNode)
+  .addNode("odd", oddNode)
+  .addEdge(START, "start")
+  .addConditionalEdges("start", router, { even: "even", odd: "odd" })
+  .addEdge("even", END)
+  .addEdge("odd", END)
+  .compile();
+
+(async () => {
+  // Stream mode: "values" returns full state after each node
+  console.log("--- streamMode: values ---");
+  for await (const chunk of await graph.stream(
+    { number: 5, path: "" },
+    { streamMode: "values" }
+  )) {
+    console.log(chunk);
+  }
+
+  // Stream mode: "updates" returns only the node's output delta
+  console.log("--- streamMode: updates ---");
+  for await (const chunk of await graph.stream(
+    { number: 5, path: "" },
+    { streamMode: "updates" }
+  )) {
+    console.log(chunk);
+  }
+})();
+
 ```
 
 **Lab**: Modify your graph to print streaming updates in real-time.
@@ -404,18 +441,14 @@ Create:
 **File**: `workshop/day1/labs/lab5_capstone.ts`
 
 ```typescript
-import { StateGraph, START, END, StateSchema, ReducedValue } from "@langchain/langgraph";
-import { z } from "zod";
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
-const State = new StateSchema({
-  messages: new ReducedValue(
-    z.array(z.string()).default([]),
-    {
-      inputSchema: z.array(z.string()),
-      reducer: (x, y) => x.concat(y),
-    }
-  ),
-  current_tool: z.string(),
+const State = Annotation.Root({
+  messages: Annotation<string[]>({
+    reducer: (x, y) => x.concat(y),
+    default: () => [],
+  }),
+  current_tool: Annotation<string>(),
 });
 
 // Stub nodes — replace with real implementations later
@@ -456,8 +489,10 @@ const graph = new StateGraph(State)
   .addEdge("synthesize", END)
   .compile();
 
-const result = await graph.invoke({ messages: ["calculate 2 + 2"], current_tool: "" });
-console.log(result.messages);
+(async () => {
+  const result = await graph.invoke({ messages: ["calculate 2 + 2"], current_tool: "" });
+  console.log(result.messages);
+})();
 ```
 
 **Checkpoint**: By end of Day 1, your graph should route correctly but tools can be stubs.
