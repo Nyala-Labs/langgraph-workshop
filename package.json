@@ -23,6 +23,7 @@
     "@langchain/core": "^0.3.0",
     "@langchain/openai": "^0.3.0",
     "@langchain/anthropic": "^0.3.0",
+    "@langchain/langgraph-checkpoint": "^0.0.17",
     "@langchain/langgraph-checkpoint-sqlite": "^0.1.0",
     "langsmith": "^0.2.0",
     "dotenv": "^16.4.0",

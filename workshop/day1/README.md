@@ -29,7 +29,7 @@ Welcome + Setup verification | 5 min |
 ### 1. Why Graphs for Agents? (Concept)
 
 **Key Ideas**:
-- Traditional chains are linear; agents need branching logic
+- Traditional chains (langchain, n8n) are linear; agents need branching logic
 - Graphs model: decision points, loops, parallel execution
 - Nodes = computation units; Edges = flow control
 - Super-steps: graph executes until all nodes are done, then saves state
@@ -327,6 +327,7 @@ const graph = new StateGraph(State)
   .addEdge("odd", END)
   .compile();
 
+// Immediately Invoked Function Expression (IIFE)
 (async () => {
   console.log(await graph.invoke({ number: 4, path: "" })); // Goes to even
   console.log(await graph.invoke({ number: 7, path: "" })); // Goes to odd

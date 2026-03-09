@@ -96,17 +96,18 @@ print(f"Total count: {result2['count']}")  # Persisted!
 
 #### TypeScript: MemorySaver
 
-```typescript
-import { StateGraph, START, END, StateSchema, ReducedValue } from "@langchain/langgraph";
-import { MemorySaver } from "@langchain/langgraph-checkpoint";
-import { z } from "zod";
+**File**: `workshop/day2/lab1.ts`
 
-const State = new StateSchema({
-  messages: new ReducedValue(
-    z.array(z.string()).default([]),
-    { inputSchema: z.array(z.string()), reducer: (x, y) => x.concat(y) }
-  ),
-  count: z.number(),
+```typescript
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
+import { MemorySaver } from "@langchain/langgraph-checkpoint";
+
+const State = Annotation.Root({
+  messages: Annotation<string[]>({
+    reducer: (x, y) => x.concat(y),
+    default: () => [],
+  }),
+  count: Annotation<number>(),
 });
 
 function chatNode(state: typeof State.State) {
@@ -119,7 +120,7 @@ const checkpointer = new MemorySaver();
 const graph = new StateGraph(State)
   .addNode("chat", chatNode)
   .addEdge(START, "chat")
-  .addEdge(END, "chat")
+  .addEdge("chat", END)
   .compile({ checkpointer });
 
 const config = { configurable: { thread_id: "conversation-1" } };
@@ -172,6 +173,8 @@ graph = workflow.compile(checkpointer=checkpointer)
 
 ### 4. Inspecting State Snapshots (Lab 2)
 
+#### Python
+
 ```python
 # Get current state
 config = {"configurable": {"thread_id": "conversation-1"}}
@@ -181,6 +184,18 @@ print(f"State values: {snapshot.values}")
 print(f"Next nodes: {snapshot.next}")
 print(f"Metadata: {snapshot.metadata}")
 print(f"Config: {snapshot.config}")
+```
+
+#### TypeScript
+
+**File**: `workshop/day2/lab2.ts`
+
+```typescript
+const snapshot = await graph.getState(config);
+console.log("State values:", snapshot.values);
+console.log("Next nodes:", snapshot.next);
+console.log("Metadata:", snapshot.metadata);
+console.log("Config:", snapshot.config);
 ```
 
 **State Snapshot Fields**:
@@ -196,6 +211,8 @@ print(f"Config: {snapshot.config}")
 
 ### 5. State History (Lab 3)
 
+#### Python
+
 ```python
 # Get full history for a thread
 config = {"configurable": {"thread_id": "conversation-1"}}
@@ -204,6 +221,18 @@ history = list(graph.get_state_history(config))
 print(f"Total checkpoints: {len(history)}")
 for i, snapshot in enumerate(history):
     print(f"Checkpoint {i}: step={snapshot.metadata['step']}, next={snapshot.next}")
+```
+
+#### TypeScript
+
+**File**: `workshop/day2/lab3.ts`
+
+```typescript
+const history: any[] = [];
+for await (const snapshot of graph.getStateHistory(config)) {
+  history.push(snapshot);
+}
+console.log(`Total checkpoints: ${history.length}`);
 ```
 
 **Key Points**:
@@ -251,6 +280,8 @@ result = graph.invoke(None, fork_config)
 ### 7. Failure Recovery (Lab 4)
 
 **Scenario**: A node fails mid-execution. Can we recover?
+
+#### Python
 
 ```python
 from typing import TypedDict
@@ -317,6 +348,12 @@ print(f"Recovered result: {result}")
 3. **Resume** by invoking with same `thread_id` (pass `None` as input)
 4. **Fix and retry** using `update_state` or deploying fixed code
 
+#### TypeScript
+
+**File**: `workshop/day2/lab4.ts`
+
+Uses `Annotation` for state, `SqliteSaver` for persistence, and `graph.updateState()` to fix state before resuming.
+
 **Lab Exercise**: 
 1. Make node C fail on first run
 2. Recover by updating state
@@ -327,6 +364,8 @@ print(f"Recovered result: {result}")
 ### 8. Multi-Turn Conversations (Lab 5)
 
 **Build a simple chatbot with memory**:
+
+#### Python
 
 ```python
 from typing import TypedDict
@@ -364,6 +403,12 @@ while True:
     assistant_msg = result["messages"][-1]["content"]
     print(f"Assistant: {assistant_msg}")
 ```
+
+#### TypeScript
+
+**File**: `workshop/day2/lab5.ts`
+
+Uses `Annotation.Root` with a `messages` reducer, `MemorySaver`, and `ChatOpenAI` for a multi-turn chatbot. Run with `npx ts-node workshop/day2/lab5.ts`.
 
 **Key Feature**: Each turn adds to the thread's checkpoint history!
 
