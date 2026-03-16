@@ -242,6 +242,7 @@ const graph = new StateGraph(State)
 
 ### 4. Conditional Edges (Lab 3)
 
+
 **Objective**: Route dynamically based on state.
 
 #### Python
@@ -291,6 +292,10 @@ print(graph.invoke({"number": 7, "path": ""}))  # Goes to odd
 #### TypeScript
 
 **File**: `workshop/day1/labs/lab3_conditional_edges.ts`
+
+```bash in root
+npm install
+```
 
 ```typescript
 import { StateGraph, START, END, Annotation } from "@langchain/langgraph";

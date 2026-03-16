@@ -42,7 +42,7 @@ const config = { configurable: { thread_id: "conversation-1" } };
       `Checkpoint ${i}: step=${snapshot.metadata?.step ?? "?"}, next=${JSON.stringify(snapshot.next)}`
     );
   });
-
+// history array = [snapshot at turn 5, snapshot at turn 4, snapshot at turn 3...]
   // Get state at checkpoint 3 (third most recent)
   if (history.length >= 3) {
     const checkpoint3 = history[2];
@@ -50,3 +50,9 @@ const config = { configurable: { thread_id: "conversation-1" } };
     console.log("\nState at checkpoint 3:", checkpoint3.values);
   }
 })();
+
+// keywords to remember
+// thread - a 'memory folder' for a graph to save all states, for all runs
+// checkpoints - they are what you save inside a thread, 1 checkpoint for 1 state
+// snapshot - all the info of the graph at 1 checkpoint
+// and you can have many snapshots

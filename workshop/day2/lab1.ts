@@ -28,7 +28,8 @@ const config = { configurable: { thread_id: "conversation-1" } };
   const result1 = await graph.invoke({ messages: ["Hi"], count: 0 }, config);
   console.log("Turn 1:", result1);
 
-  const result2 = await graph.invoke({ messages: ["How are you?"], count: 0 }, config);
+  const config2 = { configurable: { thread_id: "conversation-2" } };
+  const result2 = await graph.invoke( { count: 1 }, config2);
   console.log("Turn 2:", result2);
   console.log("Total count:", result2.count); // Persisted!
 })();

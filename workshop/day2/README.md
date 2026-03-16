@@ -99,35 +99,52 @@ print(f"Total count: {result2['count']}")  # Persisted!
 **File**: `workshop/day2/lab1.ts`
 
 ```typescript
+// named imports for tools, from scoped packages
 import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 import { MemorySaver } from "@langchain/langgraph-checkpoint";
 
+
+// define state schema, ie structure of state
+// inside has properties
+// define behavior of properties using Annotation, a tool
+// when used, Annotation just empty container, need specify what content
 const State = Annotation.Root({
-  messages: Annotation<string[]>({
-    reducer: (x, y) => x.concat(y),
-    default: () => [],
+  messages: Annotation<string[]>({ // string array, passed as param to 'type' - a Generic
+    reducer: (x, y) => x.concat(y), // reducer function inputted into messages state property definition to change update behavior
+    default: () => [], // function to set default value, if didnt assign messages when invoke graph, so code will not read from undefined in node, wont crash
   }),
   count: Annotation<number>(),
 });
 
 function chatNode(state: typeof State.State) {
+    // access state's messages property, array last item, else if undefined then fallback
   const userMsg = state.messages[state.messages.length - 1] || "Hello";
   const response = `Echo: ${userMsg}`;
   return { messages: [response], count: state.count + 1 };
 }
 
+// initialize checkpointer, save the state
+// MemorySaver saves state in ram, for production apps use cloud db
 const checkpointer = new MemorySaver();
 const graph = new StateGraph(State)
   .addNode("chat", chatNode)
+  // entry point, tell the graph, when trigger workflow, first node is chat node
   .addEdge(START, "chat")
+  // exit point, when node done, workflow done, stop running
   .addEdge("chat", END)
+  // compile takes the workflow, turns it into executable application
+  // add checkpointer into graph, auto save and load state between user interactions
+  // compile method needs json input, property is also called checkpointer, so use object property shorthand
   .compile({ checkpointer });
 
 const config = { configurable: { thread_id: "conversation-1" } };
 const result1 = await graph.invoke({ messages: ["Hi"], count: 0 }, config);
 console.log("Turn 1:", result1);
 
+// second time running graph, use same config ie same thread id
+// checkpointer takes your new input state, apply to saved state
 const result2 = await graph.invoke({ messages: ["How are you?"], count: 0 }, config);
+// reducers and default langgraph behavior apply ie overwrite
 console.log("Turn 2:", result2);
 ```
 
@@ -147,7 +164,6 @@ console.log("Turn 2:", result2);
 ```python
 from langgraph.checkpoint.sqlite import SqliteSaver
 import sqlite3
-
 conn = sqlite3.connect("checkpoints.db")
 checkpointer = SqliteSaver(conn)
 graph = workflow.compile(checkpointer=checkpointer)
@@ -191,6 +207,8 @@ print(f"Config: {snapshot.config}")
 **File**: `workshop/day2/lab2.ts`
 
 ```typescript
+// there are many checkpoints inside one thread
+// one snapshot is like the info about the graph execution at a particular checkpoint
 const snapshot = await graph.getState(config);
 console.log("State values:", snapshot.values);
 console.log("Next nodes:", snapshot.next);
