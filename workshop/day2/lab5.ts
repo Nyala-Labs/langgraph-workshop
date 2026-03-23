@@ -1,10 +1,11 @@
+import * as path from "path";
 import * as dotenv from "dotenv";
 import * as readline from "readline";
 import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 import { MemorySaver } from "@langchain/langgraph-checkpoint";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatMistralAI } from "@langchain/mistralai";
 
 const State = Annotation.Root({
   messages: Annotation<Array<{ role: string; content: string }>>({
@@ -14,7 +15,10 @@ const State = Annotation.Root({
 });
 
 async function callModel(state: typeof State.State) {
-  const model = new ChatOpenAI({ model: "gpt-4o-mini" });
+  const model = new ChatMistralAI({
+    model: "mistral-small-latest",
+    apiKey: process.env.MISTRAL_API_KEY,
+  });
   const response = await model.invoke(state.messages);
   return {
     messages: [{ role: "assistant", content: response.content as string }],

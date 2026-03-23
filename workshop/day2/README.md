@@ -424,11 +424,7 @@ while True:
 
 #### TypeScript
 
-**File**: `workshop/day2/lab5.ts`
-
-Uses `Annotation.Root` with a `messages` reducer, `MemorySaver`, and `ChatOpenAI` for a multi-turn chatbot. Run with `npx ts-node workshop/day2/lab5.ts`.
-
-**Key Feature**: Each turn adds to the thread's checkpoint history!
+Refer to workshop/day2/lab5.ts
 
 ---
 

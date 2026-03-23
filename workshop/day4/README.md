@@ -94,23 +94,7 @@ print(memories[0].value)  # {'preference': 'likes Python', ...}
 
 #### TypeScript: InMemoryStore
 
-```typescript
-import { MemoryStore } from "@langchain/langgraph";
-import { v4 as uuidv4 } from "uuid";
-
-const store = new MemoryStore();
-
-const userId = "user-123";
-const namespace = [userId, "memories"];
-
-const memoryId = uuidv4();
-const memory = { preference: "likes Python", context: "mentioned in chat" };
-await store.put(namespace, memoryId, memory);
-
-const memories = await store.search(namespace);
-console.log(`Found ${memories.length} memories`);
-console.log(memories[0].value);
-```
+Refer to lab1.ts
 
 **Lab Exercise**:
 1. Store 3 different memories for a user
